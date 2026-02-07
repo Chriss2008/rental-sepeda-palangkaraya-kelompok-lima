@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rental Sepeda Palangkaraya</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #FFB6C1 0%, #FFFFFF 50%, #90EE90 100%);
+            color: white;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .header {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            width: 100%;
+        }
+        .header h1 {
+            color: white; /* Tulisan putih */
+            background-color: #FF69B4; /* Kotak pink */
+            font-size: 16px; /* Diperkecil dari default h1 */
+            padding: 10px; /* Padding untuk membuatnya seperti kotak */
+            border-radius: 5px; /* Opsional: sudut melengkung untuk kotak */
+            margin: 0; /* Menghilangkan margin default h1 */
+            display: inline-block; /* Agar kotak tidak memenuhi seluruh lebar, tapi bisa disesuaikan */
+            width: 100%; /* Memenuhi barisan atas */
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #FF69B4; /* Pink */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #FF1493; /* Darker pink */
+        }
+        .center-content {
+            text-align: center;
+            margin-top: 100px;
+        }
+        .center-content h1 {
+            color: #FF69B4; /* Pink */
+        }
+        .bottom-left {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .bottom-right-buttons {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 800px;
+            color: black;
+            border-radius: 10px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        input, select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .admin-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .admin-section {
+            display: none;
+        }
+        .admin-section.active {
+            display: block;
+        }
+        .kelola-part {
+            border: 1px solid #FFB6C1;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Jam Buka: 07.00 - 17.00</h1>
+    </div>
+    <div class="center-content">
+        <h1>Rental Sepeda Palangkaraya</h1>
+        <button onclick="showModal('booking')">Booking Sekarang</button>
+    </div>
+    <div class="bottom-left">
+        <button onclick="showModal('layanan')">Layanan</button>
+        <button onclick="showModal('kelola')">Kelola Pesanan</button>
+    </div>
+    <div class="bottom-right-buttons">
+        <button onclick="showModal('admin')">Admin</button>
+        <button onclick="showModal('contact')">Hubungi Kami</button>
+    </div>
+
+    <!-- Modal Hubungi Kami -->
+    <div id="contact" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('contact')">&times;</span>
+            <h2>Hubungi Kami</h2>
+            <p>Nomor WhatsApp: 081223944832</p>
+        </div>
+    </div>
+
+    <!-- Modal Layanan -->
+    <div id="layanan" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('layanan')">&times;</span>
+            <h2>Rental Sepeda Area Palangkaraya</h2>
+            <p>Rental Sepeda Area Palangkaraya kini hadir untuk memberikan layanan bagi Anda yang ingin melakukan sewa sepeda di wilayah Palangkaraya untuk kebutuhan olahraga, rekreasi, maupun jalan santai. Kami menyediakan sepeda yang nyaman, bersih, dan terawat, cocok untuk segala usia.</p>
+            <p>Area layanan: Palangkaraya</p>
+            <p>Jenis sepeda: Sepeda santai dan sepeda olahraga</p>
+            <p>Harga terjangkau</p>
+            <p>Nikmati suasana Palangkaraya dengan bersepeda yang sehat dan ramah lingkungan. Untuk informasi lebih lanjut dan pemesanan, silakan hubungi kontak yang tersedia.</p>
+            <h3>Cara Pesan</h3>
+            <p>Untuk melakukan pemesanan, tekan tombol "Booking Sekarang", isi data sesuai dengan yang diminta. Jika sudah, catat atau simpan ID pemesanan untuk mempermudah pengguna jika ada kendala atau jika ingin membatalkan pesanan.</p>
+        </div>
+    </div>
+
+    <!-- Modal Booking -->
+    <div id="booking" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('booking')">&times;</span>
+            <h2>Booking Sepeda</h2>
+            <form id="bookingForm">
+                <label for="name">Nama:</label>
+                <input type="text" id="name" required>
+                
+                <label for="phone">Kontak Telepon:</label>
+                <input type="tel" id="phone" required>
+                
+                <label for="hours">Pilih Jam:</label>
+                <select id="hours" required>
+                    <option value="1">1 Jam - Rp 18.000</option>
+                    <option value="2">2 Jam - Rp 30.000</option>
+                    <option value="3">3 Jam - Rp 45.000</option>
+                </select>
+                
+                <label for="startTime">Waktu Mulai (HH:MM):</label>
+                <input type="time" id="startTime" min="07:00" max="17:00" required>
+                
+                <button type="submit">Pesan</button>
+            </form>
+            <div id="bookingResult"></div>
+        </div>
+    </div>
+
+    <!-- Modal Kelola Pesanan -->
+    <div id="kelola" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('kelola')">&times;</span>
+            <h2>Kelola Pesanan</h2>
+            <div class="kelola-part">
+                <h3>Cek Pesanan</h3>
+                <form id="checkForm">
+                    <label for="checkId">Masukkan ID Pesanan:</label>
+                    <input type="text" id="checkId" required>
+                    <button type="submit">Cek</button>
+                </form>
+                <div id="checkResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Admin -->
+    <div id="admin" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('admin')">&times;</span>
+            <div id="loginForm">
+                <h2>Login Admin</h2>
+                <form id="adminLogin">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" required>
+                    
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" required>
+                    
+                    <button type="submit">Login</button>
+                </form>
+            </div>
+            <div id="adminContent" style="display: none;">
+                <div class="admin-buttons">
+                    <button onclick="showAdminSection('incoming')">Pesanan Masuk</button>
+                    <button onclick="showAdminSection('active')">Pesanan Aktif</button>
+                    <button onclick="showAdminSection('history')">Riwayat Pesanan</button>
+                </div>
+                <div id="incomingSection" class="admin-section">
+                    <h3>Pesanan Masuk</h3>
+                    <table id="incomingOrders">
+                        <tr><th>ID</th><th>Nama</th><th>Telepon</th><th>Jam</th><th>Waktu Mulai</th><th>Waktu Berakhir</th><th>Aksi</th></tr>
+                    </table>
+                </div>
+                <div id="activeSection" class="admin-section">
+                    <h3>Pesanan Aktif</h3>
+                    <table id="activeOrders">
+                        <tr><th>ID</th><th>Nama</th><th>Telepon</th><th>Jam</th><th>Waktu Mulai</th><th>Waktu Berakhir</th><th>Aksi</th></tr>
+                    </table>
+                </div>
+                <div id="historySection" class="admin-section">
+                    <h3>Riwayat Pesanan</h3>
+                    <table id="orderHistory">
+                        <tr><th>ID</th><th>Nama</th><th>Telepon</th><th>Jam</th><th>Waktu Mulai</th><th>Waktu Berakhir</th><th>Status</th></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let orders = JSON.parse(localStorage.getItem('orders')) || [];
+        let orderIdCounter = parseInt(localStorage.getItem('orderIdCounter')) || 1;
+
+        function showModal(id) {
+            document.getElementById(id).style.display = 'block';
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        function showAdminSection(section) {
+            document.querySelectorAll('.admin-section').forEach(sec => sec.classList.remove('active'));
+            document.getElementById(section + 'Section').classList.add('active');
+            updateAdminTables();
+        }
+
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const hours = document.getElementById('hours').value;
+            const startTime = document.getElementById('startTime').value;
+            const start = new Date(`1970-01-01T${startTime}:00`);
+            const end = new Date(start.getTime() + hours * 60 * 60 * 1000);
+            const endTime = end.toTimeString().slice(0, 5);
+            const id = orderIdCounter++;
+            orders.push({ id, name, phone, hours, startTime, endTime, status: 'pending' });
+            localStorage.setItem('orders', JSON.stringify(orders));
+            localStorage.setItem('orderIdCounter', orderIdCounter);
+            document.getElementById('bookingResult').innerHTML = `<p>Pesanan berhasil! ID Pesanan: ${id}</p>`;
+            updateAdminTables();
+        });
+
+        document.getElementById('adminLogin').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            if (username === 'gueadmin888' && password === 'adminmahbebas888') {
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('adminContent').style.display = 'block';
+                showAdminSection('incoming'); // Default ke pesanan masuk
+            } else {
+                alert('Login gagal');
+            }
+        });
+
+        function updateAdminTables() {
+            const incomingTable = document.getElementById('incomingOrders');
+            const activeTable = document.getElementById('activeOrders');
+            const historyTable = document.getElementById('orderHistory');
+            incomingTable.innerHTML = '<tr><th>ID</th><th>Nama</th><th>Telepon</th><th>Jam</th><th>Waktu Mulai</th><th>Waktu Berakhir</th><th>Aksi</th></tr>';
+            activeTable.innerHTML = '<tr><th>ID</th><th>Nama</th><th>Telepon</th><th>Jam</th><th>Waktu Mulai</th><th>Waktu Berakhir</th><th>Aksi</th></tr>';
+            historyTable.innerHTML = '<tr><th>ID</th><th>Nama</th><th>Telepon</th><th>Jam</th><th>Waktu Mulai</th><th>Waktu Berakhir</th><th>Status</th></tr>';
+            orders.forEach(order => {
+                const row = `<tr><td>${order.id}</td><td>${order.name}</td><td>${order.phone}</td><td>${order.hours}</td><td>${order.startTime}</td><td>${order.endTime}</td>`;
+                if (order.status === 'pending') {
+                    incomingTable.innerHTML += row + `<td><button onclick="confirmOrder(${order.id})">Konfirmasi</button><button onclick="cancelOrder(${order.id})">Batalkan</button></td></tr>`;
+                } else if (order.status === 'active') {
+                    activeTable.innerHTML += row + `<td><button onclick="completeOrder(${order.id})">Selesai</button><button onclick="cancelOrder(${order.id})">Batalkan</button></td></tr>`;
+                }
+            });
+            // Riwayat pesanan: filter dan urutkan berdasarkan ID descending (terbaru di atas)
+            const historyOrders = orders.filter(order => order.status === 'cancelled' || order.status === 'completed').sort((a, b) => b.id - a.id);
+            historyOrders.forEach(order => {
+                const row = `<tr><td>${order.id}</td><td>${order.name}</td><td>${order.phone}</td><td>${order.hours}</td><td>${order.startTime}</td><td>${order.endTime}</td><td>${order.status}</td></tr>`;
+                historyTable.innerHTML += row;
+            });
+        }
+
+        function confirmOrder(id) {
+            const order = orders.find(o => o.id === id);
+            if (order) {
+                order.status = 'active';
+                localStorage.setItem('orders', JSON.stringify(orders));
+                updateAdminTables();
+            }
+        }
+
+        function cancelOrder(id) {
+            const order = orders.find(o => o.id === id);
+            if (order) {
+                order.status = 'cancelled';
+                localStorage.setItem('orders', JSON.stringify(orders));
+                updateAdminTables();
+            }
+        }
+
+        function completeOrder(id) {
+            const order = orders.find(o => o.id === id);
+            if (order) {
+                order.status = 'completed';
+                localStorage.setItem('orders', JSON.stringify(orders));
+                updateAdminTables();
+            }
+        }
+
+        document.getElementById('checkForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const id = parseInt(document.getElementById('checkId').value);
+            const order = orders.find(o => o.id === id);
+            const resultDiv = document.getElementById('checkResult');
+            if (order) {
+                resultDiv.innerHTML = `
+                    <p><strong>Nama:</strong> ${order.name}</p>
+                    <p><strong>Telepon:</strong> ${order.phone}</p>
+                    <p><strong>Jam:</strong> ${order.hours}</p>
+                    <p><strong>Waktu Mulai:</strong> ${order.startTime}</p>
+                    <p><strong>Waktu Berakhir:</strong> ${order.endTime}</p>
+                    <p><strong>Status:</strong> ${order.status}</p>
+                `;
+                if (order.status === 'pending' || order.status === 'active') {
+                    resultDiv.innerHTML += `<button onclick="cancelOrder(${order.id}); document.getElementById('checkResult').innerHTML = '<p>Pesanan berhasil dibatalkan.</p>';">Batalkan Pesanan</button>`;
+                }
+            } else {
+                resultDiv.innerHTML = '<p>Pesanan tidak ditemukan.</p>';
+            }
+        });
+    </script>
+</body>
+</html>
